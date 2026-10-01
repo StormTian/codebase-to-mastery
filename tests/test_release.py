@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import importlib.util
 import json
+import shutil
 import subprocess
 import tarfile
 import tempfile
@@ -99,6 +100,39 @@ class ReleaseTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "not overwritten"):
             release.package(self.repo, "HEAD", output)
         self.assertEqual(asset.read_text(), "preserve")
+
+    def test_npm_metadata_version_mismatch_is_rejected(self) -> None:
+        (self.repo / "package.json").write_text(json.dumps({"name": "codebase-to-mastery", "version": "9.0.0"}), encoding="utf-8")
+        self.run_git("add", "package.json")
+        self.run_git("commit", "-qm", "Mismatched npm version")
+        with self.assertRaisesRegex(ValueError, "name/version"):
+            release.package(self.repo, "HEAD", self.root / "mismatch")
+
+    @unittest.skipUnless(shutil.which("npm"), "npm is needed for the optional npm distribution check")
+    def test_npm_pack_uses_complete_committed_payload(self) -> None:
+        metadata = {"name": "codebase-to-mastery", "version": "1.0.0", "license": "MIT",
+                    "bin": {"codebase-to-mastery": "bin/fixture.mjs"},
+                    "files": ["SKILL.md", "VERSION", "scripts/", "assets/", "references/", "tests/", "bin/"]}
+        self.source["package.json"] = json.dumps(metadata) + "\n"
+        self.source["bin/fixture.mjs"] = "#!/usr/bin/env node\nconsole.log('fixture');\n"
+        for name in ("package.json", "bin/fixture.mjs"):
+            target = self.repo / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(self.source[name], encoding="utf-8")
+        (self.repo / "bin/fixture.mjs").chmod(0o755)
+        self.run_git("add", "package.json", "bin/fixture.mjs")
+        self.run_git("commit", "-qm", "npm fixture")
+        (self.repo / "README.md").write_text("uncommitted local change", encoding="utf-8")
+        output = self.root / "npm"
+        manifest = release.package(self.repo, "HEAD", output, build_npm=True)
+        with tarfile.open(output / "codebase-to-mastery-1.0.0.tgz") as archive:
+            actual = {}
+            for member in archive:
+                stream = archive.extractfile(member)
+                assert stream is not None
+                actual[member.name] = stream.read()
+        self.assertEqual(actual, {f"package/{name}": data.encode() for name, data in self.source.items()})
+        self.assertEqual(len(manifest["artifacts"]), 3)
 
 
 if __name__ == "__main__":

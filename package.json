@@ -1,0 +1,15 @@
+{
+  "name": "codebase-to-mastery",
+  "version": "1.1.0",
+  "description": "Install a portable, source-grounded code learning Skill for Codex, Claude Code and other Agent Skills clients.",
+  "license": "MIT",
+  "type": "module",
+  "bin": { "codebase-to-mastery": "bin/codebase-to-mastery.mjs" },
+  "engines": { "node": ">=18" },
+  "files": ["SKILL.md", "VERSION", "README.zh-CN.md", "agents/", "assets/", "bin/", "docs/", "references/", "scripts/", "tests/"],
+  "scripts": { "test": "node --test tests/npm/*.test.mjs" },
+  "repository": { "type": "git", "url": "git+https://github.com/StormTian/codebase-to-mastery.git" },
+  "homepage": "https://github.com/StormTian/codebase-to-mastery#readme",
+  "bugs": { "url": "https://github.com/StormTian/codebase-to-mastery/issues" },
+  "keywords": ["agent-skills", "codex", "claude-code", "code-learning", "codebase", "learning-kit"]
+}

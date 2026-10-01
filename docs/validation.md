@@ -56,3 +56,9 @@ These checks exercised installation and Python helpers. They did not evaluate an
 The local suite now passes 30 tests, including four release checks: repeated builds are byte-identical on the same compression runtime; ZIP/tar payloads and file checksums match the committed revision even with uncommitted local changes; mismatched tags and symbolic-link resources are rejected; existing assets are preserved.
 
 The [Release workflow](../.github/workflows/release.yml) runs the Python 3.10/3.12 suite and demo controls before building the tagged archives, then repeats the suite and demo controls from an extracted ZIP. Its published manifest and workflow run provide the source revision and actual publication evidence. See [releasing](releasing.md) for reproduction and checksum instructions.
+
+## npm distribution · v1.1.0
+
+The local suite passes 32 Python tests and six Node installer tests. New checks exercise actual offline `npm pack` output, committed-payload equality, version alignment, multi-client resource installation, custom targets, existing-folder preservation, dangling-symlink refusal and read-only preview/help/version behavior.
+
+Run the Node tests with `npm test` or `node --test tests/npm/*.test.mjs`. The optional npm packaging test in the Python suite requires npm; without it the test reports a skip rather than claiming a pass. Full release CI includes both runtimes, builds the `.tgz` from a committed staging tree and executes `npm exec` against that actual file before publishing. This proves installation and fixture behavior, not learner mastery.

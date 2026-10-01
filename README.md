@@ -8,6 +8,31 @@ A portable Agent Skill for **Codex, Claude Code and other clients that support `
 
 ![Six-level learning path](docs/mastery-path.jpg)
 
+## Inspiration and differences
+
+The original idea comes from **[Zara Zhang's codebase-to-course](https://github.com/zarazhangrui/codebase-to-course)**: make real code approachable through a product-first interactive HTML course, plain-language source explanations and visual quizzes. Codebase to Mastery builds on that learning experience with an independently implemented progressive kit and practice workflow.
+
+| Design area | codebase-to-course's primary emphasis | Codebase to Mastery |
+| --- | --- | --- |
+| Learner | Non-technical builders and vibe coders | Adapt from beginner orientation to deeper engineering study |
+| Learning goal | Understand the product and how its code works | Explain, trace, rebuild a bounded subsystem, extend and teach back |
+| Deliverable | Interactive HTML course and editable modules | HTML plus a learning manifest, reading path, source map, recall and practice kit |
+| Source evidence | Real code beside accessible explanations | Exact path/line/text checks across the source map and final HTML |
+| Practice and progress | Visual explanations, quizzes and course progress | Separate starter/reference tests; mastery requires assessed answers and actual learner runs |
+| Maintenance and interface | Product-first course assembly and its visual design | Source-change impact reports, preserved answers, and an original dark-directory/teal/mobile interface |
+| Distribution | Claude Code Skill workflow | Portable Codex/Claude Code resources, Skills CLI installation and a GitHub-hosted npm installer |
+
+The upgrade also draws on these projects:
+
+| Project | Idea adapted |
+| --- | --- |
+| [StrivingLee/repo-learning-kit](https://github.com/StrivingLee/repo-learning-kit) | Purposeful reading, bounded rebuilding, milestone tests and comparison with source |
+| [Terryc21/tutorial-creator](https://github.com/Terryc21/tutorial-creator) | Learn from actual project changes and maintain explicit learning state |
+| [shuolsure/code-learning-tutorial-skill](https://github.com/shuolsure/code-learning-tutorial-skill) | Concept prerequisites and progressive execution visuals |
+| [ktaletsk/learn-codebase](https://github.com/ktaletsk/learn-codebase) | Prediction, Socratic tutoring, active recall and a durable journal |
+
+These are design inspirations; the templates, scripts and prose here were written independently. The comparison describes the [reviewed, pinned revisions](references/provenance.md), rather than making claims about every future upstream version. It is a difference in learning scope, not a measured claim of better educational outcomes. [Source revisions and hashes](docs/inspiration-sources.json) are recorded for reproducibility.
+
 ## What makes it different
 
 The goal is a learning loop with observable evidence:
@@ -31,6 +56,19 @@ The offline UI uses a dark chapter directory, cool teal accents, compact learnin
 
 ## Install
 
+### Direct npx installation from the GitHub npm package
+
+The [v1.1.0 Release](https://github.com/StormTian/codebase-to-mastery/releases/tag/v1.1.0) includes a standard `npm pack` tarball with a zero-dependency installer:
+
+```bash
+npx --yes https://github.com/StormTian/codebase-to-mastery/releases/download/v1.1.0/codebase-to-mastery-1.1.0.tgz \
+  --agent codex claude-code
+```
+
+Requires Node.js 18+. It copies the complete Skill into the current project's `.agents/skills/codebase-to-mastery` and `.claude/skills/codebase-to-mastery`. Use `--global` for the documented personal directories, `--dry-run` to preview paths, or `--directory /path/to/skills` for another client. Existing skill folders are preserved; move them aside before reinstalling. The installer places the Skill; your agent uses it to produce learning materials.
+
+The `.tgz` is hosted in GitHub Releases. It has **not** been published to npmjs.com or the GitHub Packages registry, so the supported direct command uses the full download URL. You can also download it and run `npx --yes /absolute/path/codebase-to-mastery-1.1.0.tgz --agent codex claude-code`.
+
 ### One command for Codex and Claude Code
 
 From the project where you want the skill available:
@@ -40,18 +78,18 @@ npx skills add StormTian/codebase-to-mastery \
   --skill codebase-to-mastery --agent codex claude-code
 ```
 
-The [open-source Skills CLI](https://github.com/vercel-labs/skills) also supports other clients. Add `--global` for a personal installation, or select a different `--agent`. Node.js is required only for this installation method; the skill's helpers use Python's standard library.
+The [open-source Skills CLI](https://github.com/vercel-labs/skills) also supports other clients. Add `--global` for a personal installation, or select a different `--agent`. Node.js powers the `npx` installation methods; the skill's learning helpers use Python's standard library.
 
 ### Install a fixed release or download an archive
 
-For the stable `v1.0.0` version:
+For the stable `v1.1.0` version:
 
 ```bash
-npx skills add https://github.com/StormTian/codebase-to-mastery/tree/v1.0.0 \
+npx skills add https://github.com/StormTian/codebase-to-mastery/tree/v1.1.0 \
   --skill codebase-to-mastery --agent codex claude-code
 ```
 
-The [v1.0.0 Release](https://github.com/StormTian/codebase-to-mastery/releases/tag/v1.0.0) includes ZIP, tar.gz, a source/file manifest and `SHA256SUMS`. Extract either archive, then place the complete `codebase-to-mastery/` folder in your client's skill directory below. See [release notes](docs/releases/v1.0.0.md) for checksum verification and [reproducing a release](docs/releasing.md) for packaging instructions. These are portable Skill archives; `npx` installation uses the Skills CLI.
+The [v1.1.0 Release](https://github.com/StormTian/codebase-to-mastery/releases/tag/v1.1.0) includes ZIP, tar.gz, the npm `.tgz`, a source/file manifest and `SHA256SUMS`. ZIP/tar.gz extract to a complete `codebase-to-mastery/` folder you can place in your client's skill directory. See [release notes](docs/releases/v1.1.0.md) for checksum verification and [reproducing a release](docs/releasing.md) for packaging instructions. The original [v1.0.0](https://github.com/StormTian/codebase-to-mastery/releases/tag/v1.0.0) remains available.
 
 ### Manual installation
 

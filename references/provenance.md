@@ -23,3 +23,9 @@ Codex packaging guidance: [official skill structure and progressive resources](h
 ## Portable distribution · 2026-10-01
 
 The core uses the open [Agent Skills format](https://agentskills.io/specification), with optional Codex UI metadata. Installation guidance was checked against [OpenAI skills documentation](https://learn.chatgpt.com/docs/build-skills), [Claude Code skills documentation](https://code.claude.com/docs/en/skills), [anthropics/skills](https://github.com/anthropics/skills) and [vercel-labs/skills](https://github.com/vercel-labs/skills). README layout and installation examples are written independently. MIT applies to this repository’s original code and assets, not to source material from projects taught with the skill.
+
+## Explicit README attribution and npm distribution · v1.1.0
+
+The English and Chinese README now identify Zara Zhang's `codebase-to-course` as the initial inspiration and distinguish it from the four subsequent learning-method inspirations above. Their comparison describes the reviewed revisions' design priorities; it does not assert that every upstream version lacks the features implemented here. All five pinned primary Skill files were retrieved again on 2026-10-01 and matched the recorded SHA-256 hashes.
+
+The zero-dependency Node installer was written for this repository. Standard npm packaging follows [npm pack](https://docs.npmjs.com/cli/v11/commands/npm-pack/) and direct execution follows [npm exec/npx](https://docs.npmjs.com/cli/v11/commands/npm-exec/). The `.tgz` is a GitHub Release asset; no npm registry or GitHub Packages publication is implied. Client paths were checked again against official OpenAI and Claude Code documentation on 2026-10-01.

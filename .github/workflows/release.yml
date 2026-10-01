@@ -30,7 +30,7 @@ jobs:
       - name: Package the exact validated tag
         env:
           RELEASE_TAG: ${{ github.ref_name }}
-        run: python scripts/package_release.py --tag "$RELEASE_TAG" --output dist
+        run: python scripts/package_release.py --tag "$RELEASE_TAG" --npm --output dist
       - name: Verify and exercise the packaged Skill
         run: |
           cd dist
@@ -38,12 +38,25 @@ jobs:
           unzip -q codebase-to-mastery-*.zip -d "$RUNNER_TEMP/release-smoke"
           cd "$RUNNER_TEMP/release-smoke/codebase-to-mastery"
           python -m unittest discover -s tests -v
+          node --test tests/npm/*.test.mjs
           python tests/create_demo.py "$RUNNER_TEMP/release-demo"
           python scripts/check_milestone.py "$RUNNER_TEMP/release-demo" --milestone contract --variant starter
           python scripts/check_milestone.py "$RUNNER_TEMP/release-demo" --milestone core --variant starter
           python scripts/check_milestone.py "$RUNNER_TEMP/release-demo" --milestone budget --variant starter
           python scripts/check_milestone.py "$RUNNER_TEMP/release-demo" --milestone core --variant reference
           python scripts/check_milestone.py "$RUNNER_TEMP/release-demo" --milestone budget --variant reference
+      - name: Exercise npx from the actual npm tarball
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          mkdir "$RUNNER_TEMP/npm-smoke"
+          cd "$RUNNER_TEMP/npm-smoke"
+          npm exec --offline --yes --cache "$RUNNER_TEMP/npm-smoke-cache" \
+            --package="$GITHUB_WORKSPACE/dist/codebase-to-mastery-${RELEASE_TAG#v}.tgz" \
+            -- codebase-to-mastery --agent codex claude-code
+          python .agents/skills/codebase-to-mastery/tests/create_demo.py "$RUNNER_TEMP/npm-demo"
+          python .agents/skills/codebase-to-mastery/scripts/check_milestone.py "$RUNNER_TEMP/npm-demo" --milestone core --variant reference
+          test -f .claude/skills/codebase-to-mastery/SKILL.md
       - name: Publish Release and download assets
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

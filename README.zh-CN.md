@@ -8,6 +8,31 @@
 
 ![六层学习路径](docs/mastery-path.jpg)
 
+## 启发来源与原始项目的区别
+
+最初的想法主要受到 **[Zara Zhang 的 codebase-to-course](https://github.com/zarazhangrui/codebase-to-course)** 启发：从产品出发，把真实源码变成易懂的 HTML 交互课程，用白话解释、可视化和测验帮助读者建立全貌。Codebase to Mastery 在这一体验上扩展了由浅入深的学习包和实践流程，并独立实现模板与工具。
+
+| 设计维度 | codebase-to-course 的主要侧重 | Codebase to Mastery |
+| --- | --- | --- |
+| 面向读者 | 非技术背景的构建者、vibe coder | 从入门理解逐步走向工程层面的深学 |
+| 学习目标 | 理解产品与代码如何工作 | 解释设计、追踪源码、局部重建、扩展验证、复述迁移 |
+| 交付内容 | HTML 交互课程与可编辑模块 | HTML 加学习 manifest、阅读路径、source map、回忆题与实践包 |
+| 源码依据 | 真实代码与通俗解释对照 | 对文件路径、行号、原文做精确校验，并覆盖最终 HTML |
+| 实践与进度 | 可视化、Quiz 与课程进度 | starter/reference 共用行为测试；掌握状态需要真实回答、评价与 learner 运行 |
+| 更新与界面 | 从产品组织课程及其视觉设计 | 源码变更影响报告、保留历史回答，以及独立的深色目录、青蓝配色和手机界面 |
+| 分发与客户端 | Claude Code Skill 工作流 | 通用 Codex/Claude Code 资源、Skills CLI 安装及 GitHub 托管的 npm 安装入口 |
+
+进阶设计还借鉴了以下项目的方法：
+
+| 项目 | 借鉴思路 |
+| --- | --- |
+| [StrivingLee/repo-learning-kit](https://github.com/StrivingLee/repo-learning-kit) | 有目的的源码阅读、局部重建、里程碑测试和源码对照 |
+| [Terryc21/tutorial-creator](https://github.com/Terryc21/tutorial-creator) | 从实际项目变更中学习、明确记录学习状态 |
+| [shuolsure/code-learning-tutorial-skill](https://github.com/shuolsure/code-learning-tutorial-skill) | 概念前置依赖和渐进式执行可视化 |
+| [ktaletsk/learn-codebase](https://github.com/ktaletsk/learn-codebase) | 预测、苏格拉底式引导、主动回忆和长期学习日志 |
+
+以上属于设计思路借鉴；本仓库的模板、脚本和文字独立编写。比较针对 [实际审阅的冻结版本](references/provenance.md)，不概括上游未来所有版本，也不声称已经证明教学效果更好。[来源版本与哈希](docs/inspiration-sources.json)保留了可追溯记录。
+
 ## 设计差异
 
 学习围绕六层能力推进：
@@ -29,6 +54,21 @@
 
 ## 安装
 
+### 直接使用 GitHub 上的 npm 安装包
+
+[v1.1.0 Release](https://github.com/StormTian/codebase-to-mastery/releases/tag/v1.1.0) 提供标准 `npm pack` 生成的 `.tgz`，内置零依赖安装入口：
+
+```bash
+npx --yes https://github.com/StormTian/codebase-to-mastery/releases/download/v1.1.0/codebase-to-mastery-1.1.0.tgz \
+  --agent codex claude-code
+```
+
+需要 Node.js 18+。默认安装到当前项目的 `.agents/skills/codebase-to-mastery` 和 `.claude/skills/codebase-to-mastery`；加 `--global` 安装到个人目录，`--dry-run` 查看目标，其他客户端使用 `--directory /path/to/skills`。已有 Skill 文件夹不会被覆盖，重装前需先自行移走旧目录。安装入口负责放置 Skill，学习资料仍由 Agent 使用 Skill 生成。
+
+这个 npm `.tgz` 托管在 **GitHub Releases**，尚未发布到 npmjs.com 或 GitHub Packages registry，所以直接安装使用完整下载地址。也可先下载，再执行 `npx --yes /absolute/path/codebase-to-mastery-1.1.0.tgz --agent codex claude-code`。
+
+### 使用通用 Skills CLI
+
 在目标项目目录，一次安装到 Codex 和 Claude Code：
 
 ```bash
@@ -36,16 +76,16 @@ npx skills add StormTian/codebase-to-mastery \
   --skill codebase-to-mastery --agent codex claude-code
 ```
 
-这是 [Skills CLI](https://github.com/vercel-labs/skills) 的安装方式。个人全局安装可加 `--global`，其他客户端使用对应 `--agent`。Node.js 只用于这个安装方式；Skill 的辅助脚本使用 Python 标准库。
+这是 [Skills CLI](https://github.com/vercel-labs/skills) 的安装方式。个人全局安装可加 `--global`，其他客户端使用对应 `--agent`。Node.js 用于两种 `npx` 安装方式；Skill 的学习脚本使用 Python 标准库。
 
-安装固定的 `v1.0.0` 版本：
+安装固定的 `v1.1.0` 版本：
 
 ```bash
-npx skills add https://github.com/StormTian/codebase-to-mastery/tree/v1.0.0 \
+npx skills add https://github.com/StormTian/codebase-to-mastery/tree/v1.1.0 \
   --skill codebase-to-mastery --agent codex claude-code
 ```
 
-[v1.0.0 Release](https://github.com/StormTian/codebase-to-mastery/releases/tag/v1.0.0) 提供 ZIP、tar.gz、源码/文件清单和 `SHA256SUMS`。解压任一安装包后，把完整的 `codebase-to-mastery/` 放到下方客户端目录。校验方法见 [发布说明](docs/releases/v1.0.0.md)，构建方式见 [打包与发布](docs/releasing.md)。发布包是通用 Skill 文件夹；`npx` 安装继续使用 Skills CLI。
+[v1.1.0 Release](https://github.com/StormTian/codebase-to-mastery/releases/tag/v1.1.0) 提供 ZIP、tar.gz、npm `.tgz`、源码/文件清单和 `SHA256SUMS`。ZIP/tar.gz 解压后可把完整的 `codebase-to-mastery/` 放到下方客户端目录。校验方法见 [发布说明](docs/releases/v1.1.0.md)，构建方式见 [打包与发布](docs/releasing.md)。旧版 [v1.0.0](https://github.com/StormTian/codebase-to-mastery/releases/tag/v1.0.0) 继续保留。
 
 手工安装到 Codex 当前官方文档中的个人目录：
 

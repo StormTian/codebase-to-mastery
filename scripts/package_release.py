@@ -12,6 +12,7 @@ import json
 import re
 import subprocess
 import tarfile
+import tempfile
 import zipfile
 from pathlib import Path, PurePosixPath
 
@@ -27,7 +28,7 @@ def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def package(repo: Path, ref: str, output: Path, tag: str | None = None) -> dict:
+def package(repo: Path, ref: str, output: Path, tag: str | None = None, build_npm: bool = False) -> dict:
     commit = git(repo, "rev-parse", "--verify", f"{ref}^{{commit}}").decode().strip()
     timestamp = int(git(repo, "show", "-s", "--format=%ct", commit))
     version = git(repo, "show", f"{commit}:VERSION").decode().strip()
@@ -65,10 +66,19 @@ def package(repo: Path, ref: str, output: Path, tag: str | None = None) -> dict:
             raise ValueError(f"Missing release resource: {required}")
     if f'  version: "{version}"' not in files["SKILL.md"][0].decode():
         raise ValueError("Skill metadata version does not match VERSION")
+    if "package.json" in files:
+        metadata = json.loads(files["package.json"][0])
+        if metadata.get("name") != SKILL_NAME or metadata.get("version") != version:
+            raise ValueError("npm package name/version does not match the Skill release")
+    elif build_npm:
+        raise ValueError("npm packaging requires a committed package.json")
 
     output.mkdir(parents=True, exist_ok=True)
     stem = f"{SKILL_NAME}-v{version}"
     names = [f"{stem}.zip", f"{stem}.tar.gz", "release-manifest.json", "SHA256SUMS"]
+    npm_name = f"{SKILL_NAME}-{version}.tgz"
+    if build_npm:
+        names.append(npm_name)
     if any((output / name).exists() for name in names):
         raise ValueError("Use a fresh output directory; release assets are not overwritten")
 
@@ -92,6 +102,38 @@ def package(repo: Path, ref: str, output: Path, tag: str | None = None) -> dict:
     with gzip.GzipFile(fileobj=gzip_bytes, mode="wb", filename="", compresslevel=9, mtime=0) as compressed:
         compressed.write(tar_bytes.getvalue())
     artifacts = {names[0]: zip_bytes.getvalue(), names[1]: gzip_bytes.getvalue()}
+    if build_npm:
+        # Stage only the committed payload, so npm never reads local learner files.
+        with tempfile.TemporaryDirectory(prefix="mastery-npm-pack-") as temporary:
+            stage = Path(temporary) / "package"
+            stage.mkdir()
+            for name, (data, mode) in files.items():
+                target = stage / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(data)
+                target.chmod(mode)
+            subprocess.run(
+                ["npm", "pack", "--offline", "--ignore-scripts", "--json", "--cache", str(Path(temporary) / "cache"),
+                 "--pack-destination", str(Path(temporary))],
+                cwd=stage, check=True, capture_output=True, text=True,
+            )
+            packed_path = Path(temporary) / npm_name
+            # npm 10/11 return a JSON array; npm 12 can return an object.
+            # Verify the actual artifact rather than depending on stdout shape.
+            if not packed_path.is_file() or list(Path(temporary).glob("*.tgz")) != [packed_path]:
+                raise ValueError("Unexpected npm pack output")
+            npm_bytes = packed_path.read_bytes()
+            with tarfile.open(fileobj=io.BytesIO(npm_bytes), mode="r:gz") as npm_archive:
+                npm_files = {}
+                for member in npm_archive:
+                    if not member.isfile() or not member.name.startswith("package/"):
+                        raise ValueError("Unexpected entry in npm tarball")
+                    stream = npm_archive.extractfile(member)
+                    assert stream is not None
+                    npm_files[member.name.removeprefix("package/")] = stream.read()
+                if npm_files != {name: data for name, (data, _) in files.items()}:
+                    raise ValueError("npm tarball differs from the complete committed Skill payload")
+            artifacts[npm_name] = npm_bytes
     manifest = {
         "schemaVersion": 1, "skill": SKILL_NAME, "version": version, "tag": f"v{version}",
         "commit": commit, "rootDirectory": SKILL_NAME, "fileCount": len(files),
@@ -114,8 +156,9 @@ def main() -> None:
     parser.add_argument("--ref", default="HEAD", help="Committed revision; working-tree files are ignored")
     parser.add_argument("--tag", help="Require this tag to match VERSION and the packaged commit")
     parser.add_argument("--output", type=Path, default=Path("dist"))
+    parser.add_argument("--npm", action="store_true", help="Also build and verify a standard npm pack tarball (requires Node/npm)")
     args = parser.parse_args()
-    manifest = package(args.repo, args.ref, args.output, args.tag)
+    manifest = package(args.repo, args.ref, args.output, args.tag, args.npm)
     print(json.dumps({"version": manifest["version"], "commit": manifest["commit"],
                       "fileCount": manifest["fileCount"], "output": str(args.output)}, indent=2))
 
