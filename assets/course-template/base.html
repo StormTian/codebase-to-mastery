@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="{{LANG}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="generator" content="codebase-to-mastery">
+  <title>{{TITLE}}</title>
+  <style>{{CSS}}</style>
+</head>
+<body style="--accent: {{ACCENT}}">
+  <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+  <aside class="course-rail" aria-label="Course navigation">
+    <a class="course-mark" href="#course-start" aria-label="Back to course start">C<span>→</span>C</a>
+    <nav class="module-nav" aria-label="Modules">{{NAV}}</nav>
+    <p class="key-hint"><kbd>J</kbd><kbd>K</kbd> to move</p>
+  </aside>
+
+  <header class="course-cover" id="course-start">
+    <p class="cover-kicker">Source-grounded code learning</p>
+    <h1>{{TITLE}}</h1>
+    <p class="cover-subtitle">{{SUBTITLE}}</p>
+    <dl class="course-meta">
+      <div><dt>Source</dt><dd>{{SOURCE_NAME}}</dd></div>
+      <div><dt>Revision</dt><dd>{{REVISION}}</dd></div>
+      <div><dt>Modules</dt><dd>{{MODULE_COUNT}}</dd></div>
+    </dl>
+    <a class="start-link" href="{{START_TARGET}}">{{START_LABEL}} <span aria-hidden="true">↓</span></a>
+    <button type="button" class="motion-toggle" id="motion-toggle" aria-pressed="false">{{MOTION_LABEL}}</button>
+  </header>
+
+  {{LEARNING_PANEL}}
+  <main id="course">{{MODULES}}</main>
+
+  <footer class="course-footer">
+    <p>Built from inspected source. Code excerpts name their original file and line range.</p>
+    <a href="#course-start">Back to top ↑</a>
+  </footer>
+  <script>{{JS}}</script>
+</body>
+</html>

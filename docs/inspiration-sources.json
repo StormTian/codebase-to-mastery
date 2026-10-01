@@ -1,0 +1,52 @@
+[
+  {
+    "repo": "zarazhangrui/codebase-to-course",
+    "revision": "ff8837ecf8e9f6ce9874ffa42e42633394a52a00",
+    "commitDate": "2026-03-30T18:26:09Z",
+    "license": null,
+    "file": "SKILL.md",
+    "sha256": "4e799a594afca564db0b8381bf79344d8bc331220b8fc53cdb484d797e9c1d3c",
+    "url": "https://github.com/zarazhangrui/codebase-to-course/blob/ff8837ecf8e9f6ce9874ffa42e42633394a52a00/SKILL.md",
+    "accessDate": "2026-10-01"
+  },
+  {
+    "repo": "StrivingLee/repo-learning-kit",
+    "revision": "1a8259fa7df03044551cd9a0bd5508719500e850",
+    "commitDate": "2026-07-10T19:02:32Z",
+    "license": "MIT",
+    "file": "SKILL.md",
+    "sha256": "ed2ca5842d170290d734b8d444f705c70f076aaf8af658a7b2000553ee6cf421",
+    "url": "https://github.com/StrivingLee/repo-learning-kit/blob/1a8259fa7df03044551cd9a0bd5508719500e850/SKILL.md",
+    "accessDate": "2026-10-01"
+  },
+  {
+    "repo": "Terryc21/tutorial-creator",
+    "revision": "6d4b025615405ea1fc0c5e7c70b6fb36785ab0d0",
+    "commitDate": "2026-09-30T15:46:13Z",
+    "license": "Apache-2.0",
+    "file": "skills/tutorial-creator/SKILL.md",
+    "sha256": "84744fc6612232c31823566ccf1bdf9bf08929d4b83aa5357168d86d89936662",
+    "url": "https://github.com/Terryc21/tutorial-creator/blob/6d4b025615405ea1fc0c5e7c70b6fb36785ab0d0/skills/tutorial-creator/SKILL.md",
+    "accessDate": "2026-10-01"
+  },
+  {
+    "repo": "shuolsure/code-learning-tutorial-skill",
+    "revision": "4e473e3f4d6ac9cb99ca3305353522d1022c78a4",
+    "commitDate": "2026-03-04T11:47:10Z",
+    "license": "MIT",
+    "file": "SKILL.md",
+    "sha256": "0064582f34792b9f9f8f5418967dc4163107a7795f535a350928323d3bc6d6b4",
+    "url": "https://github.com/shuolsure/code-learning-tutorial-skill/blob/4e473e3f4d6ac9cb99ca3305353522d1022c78a4/SKILL.md",
+    "accessDate": "2026-10-01"
+  },
+  {
+    "repo": "ktaletsk/learn-codebase",
+    "revision": "cbc0304609e76041f7f29b3ae9a1e3f1a16e07ad",
+    "commitDate": "2026-06-15T22:19:14Z",
+    "license": "MIT",
+    "file": "SKILL.md",
+    "sha256": "94c5d9667ba8ae4a2a4c22d9a74b2bd36e89cb9f4167489816cb5799edf19554",
+    "url": "https://github.com/ktaletsk/learn-codebase/blob/cbc0304609e76041f7f29b3ae9a1e3f1a16e07ad/SKILL.md",
+    "accessDate": "2026-10-01"
+  }
+]

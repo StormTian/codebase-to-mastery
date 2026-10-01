@@ -1,0 +1,5 @@
+interface:
+  display_name: "Codebase to Mastery · 源码掌握工坊"
+  short_description: "由浅入深学习源码：交互课、阅读路径、主动回忆、局部重建与持续复习"
+  brand_color: "#D95D39"
+  default_prompt: "Use $codebase-to-mastery to build a source-grounded learning path for this project, progressing from architecture and guided source reading to active recall, a bounded rebuild and verified extension exercises. Adapt the depth to my background and the repository's size."
