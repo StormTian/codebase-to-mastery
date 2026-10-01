@@ -6,7 +6,7 @@
 
 这是一个支持 **Codex、Claude Code 和通用 Agent Skills 客户端**的 Skill。输入本地代码库或 GitHub 项目，输出源码可追溯的学习包、离线交互课程和有边界的实践练习。
 
-![六层学习路径](docs/learning-path.jpg)
+![六层学习路径](docs/mastery-path.jpg)
 
 ## 设计差异
 

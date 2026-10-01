@@ -6,7 +6,7 @@
 
 A portable Agent Skill for **Codex, Claude Code and other clients that support `SKILL.md`**. It turns a repository into a source-grounded learning path, with an offline interactive course, purposeful reading, active recall and bounded implementation exercises.
 
-![Six-level learning path](docs/learning-path.jpg)
+![Six-level learning path](docs/mastery-path.jpg)
 
 ## What makes it different
 
