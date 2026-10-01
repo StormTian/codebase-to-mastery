@@ -2,7 +2,7 @@
 
 **从读懂真实源码，走向能够解释、重建、验证并迁移其中的机制。**
 
-[English](README.md) · [Skill 入口](SKILL.md) · [验证范围](docs/validation.md) · [MIT 许可证](LICENSE)
+[English](README.md) · [Skill 入口](SKILL.md) · [版本发布](https://github.com/StormTian/codebase-to-mastery/releases) · [验证范围](docs/validation.md) · [MIT 许可证](LICENSE)
 
 这是一个支持 **Codex、Claude Code 和通用 Agent Skills 客户端**的 Skill。输入本地代码库或 GitHub 项目，输出源码可追溯的学习包、离线交互课程和有边界的实践练习。
 
@@ -37,6 +37,15 @@ npx skills add StormTian/codebase-to-mastery \
 ```
 
 这是 [Skills CLI](https://github.com/vercel-labs/skills) 的安装方式。个人全局安装可加 `--global`，其他客户端使用对应 `--agent`。Node.js 只用于这个安装方式；Skill 的辅助脚本使用 Python 标准库。
+
+安装固定的 `v1.0.0` 版本：
+
+```bash
+npx skills add https://github.com/StormTian/codebase-to-mastery/tree/v1.0.0 \
+  --skill codebase-to-mastery --agent codex claude-code
+```
+
+[v1.0.0 Release](https://github.com/StormTian/codebase-to-mastery/releases/tag/v1.0.0) 提供 ZIP、tar.gz、源码/文件清单和 `SHA256SUMS`。解压任一安装包后，把完整的 `codebase-to-mastery/` 放到下方客户端目录。校验方法见 [发布说明](docs/releases/v1.0.0.md)，构建方式见 [打包与发布](docs/releasing.md)。发布包是通用 Skill 文件夹；`npx` 安装继续使用 Skills CLI。
 
 手工安装到 Codex 当前官方文档中的个人目录：
 

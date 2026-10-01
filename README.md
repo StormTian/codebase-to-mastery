@@ -2,7 +2,7 @@
 
 **From reading real code to explaining, rebuilding and transferring its ideas.**
 
-[中文说明](README.zh-CN.md) · [Skill instructions](SKILL.md) · [Validation](docs/validation.md) · [MIT license](LICENSE)
+[中文说明](README.zh-CN.md) · [Skill instructions](SKILL.md) · [Releases](https://github.com/StormTian/codebase-to-mastery/releases) · [Validation](docs/validation.md) · [MIT license](LICENSE)
 
 A portable Agent Skill for **Codex, Claude Code and other clients that support `SKILL.md`**. It turns a repository into a source-grounded learning path, with an offline interactive course, purposeful reading, active recall and bounded implementation exercises.
 
@@ -41,6 +41,17 @@ npx skills add StormTian/codebase-to-mastery \
 ```
 
 The [open-source Skills CLI](https://github.com/vercel-labs/skills) also supports other clients. Add `--global` for a personal installation, or select a different `--agent`. Node.js is required only for this installation method; the skill's helpers use Python's standard library.
+
+### Install a fixed release or download an archive
+
+For the stable `v1.0.0` version:
+
+```bash
+npx skills add https://github.com/StormTian/codebase-to-mastery/tree/v1.0.0 \
+  --skill codebase-to-mastery --agent codex claude-code
+```
+
+The [v1.0.0 Release](https://github.com/StormTian/codebase-to-mastery/releases/tag/v1.0.0) includes ZIP, tar.gz, a source/file manifest and `SHA256SUMS`. Extract either archive, then place the complete `codebase-to-mastery/` folder in your client's skill directory below. See [release notes](docs/releases/v1.0.0.md) for checksum verification and [reproducing a release](docs/releasing.md) for packaging instructions. These are portable Skill archives; `npx` installation uses the Skills CLI.
 
 ### Manual installation
 

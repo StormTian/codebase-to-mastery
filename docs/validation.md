@@ -50,3 +50,9 @@ The README installation conventions were checked on 2026-10-01 against [OpenAI](
 | Revised offline UI at 1280×720 and 390×844 | Six-stage path, chapter navigation, J/K, quiz feedback, reduced motion, flow/chat, collapsed answers, persisted recall and unassessed JSON export checked in a browser |
 
 These checks exercised installation and Python helpers. They did not evaluate an end-to-end teaching session in Claude Code or every compatible client. The [Checks workflow](https://github.com/StormTian/codebase-to-mastery/actions/workflows/checks.yml) repeats the behavioral tests and demo controls on Python 3.10 and 3.12; its run status is the current evidence for those versions.
+
+## Release packaging · v1.0.0
+
+The local suite now passes 30 tests, including four release checks: repeated builds are byte-identical on the same compression runtime; ZIP/tar payloads and file checksums match the committed revision even with uncommitted local changes; mismatched tags and symbolic-link resources are rejected; existing assets are preserved.
+
+The [Release workflow](../.github/workflows/release.yml) runs the Python 3.10/3.12 suite and demo controls before building the tagged archives, then repeats the suite and demo controls from an extracted ZIP. Its published manifest and workflow run provide the source revision and actual publication evidence. See [releasing](releasing.md) for reproduction and checksum instructions.

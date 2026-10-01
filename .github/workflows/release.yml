@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  checks:
+    uses: ./.github/workflows/checks.yml
+  publish:
+    needs: checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - name: Package the exact validated tag
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: python scripts/package_release.py --tag "$RELEASE_TAG" --output dist
+      - name: Verify and exercise the packaged Skill
+        run: |
+          cd dist
+          sha256sum --check SHA256SUMS
+          unzip -q codebase-to-mastery-*.zip -d "$RUNNER_TEMP/release-smoke"
+          cd "$RUNNER_TEMP/release-smoke/codebase-to-mastery"
+          python -m unittest discover -s tests -v
+          python tests/create_demo.py "$RUNNER_TEMP/release-demo"
+          python scripts/check_milestone.py "$RUNNER_TEMP/release-demo" --milestone contract --variant starter
+          python scripts/check_milestone.py "$RUNNER_TEMP/release-demo" --milestone core --variant starter
+          python scripts/check_milestone.py "$RUNNER_TEMP/release-demo" --milestone budget --variant starter
+          python scripts/check_milestone.py "$RUNNER_TEMP/release-demo" --milestone core --variant reference
+          python scripts/check_milestone.py "$RUNNER_TEMP/release-demo" --milestone budget --variant reference
+      - name: Publish Release and download assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$RELEASE_TAG" dist/* \
+            --repo "$GITHUB_REPOSITORY" --verify-tag --latest \
+            --title "Codebase to Mastery $RELEASE_TAG" \
+            --notes-file "docs/releases/$RELEASE_TAG.md"
