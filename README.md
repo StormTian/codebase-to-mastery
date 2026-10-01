@@ -61,13 +61,14 @@ The offline UI uses a dark chapter directory, cool teal accents, compact learnin
 The [v1.1.0 Release](https://github.com/StormTian/codebase-to-mastery/releases/tag/v1.1.0) includes a standard `npm pack` tarball with a zero-dependency installer:
 
 ```bash
-npx --yes https://github.com/StormTian/codebase-to-mastery/releases/download/v1.1.0/codebase-to-mastery-1.1.0.tgz \
-  --agent codex claude-code
+npx --yes \
+  --package=https://github.com/StormTian/codebase-to-mastery/releases/download/v1.1.0/codebase-to-mastery-1.1.0.tgz \
+  codebase-to-mastery --agent codex claude-code
 ```
 
 Requires Node.js 18+. It copies the complete Skill into the current project's `.agents/skills/codebase-to-mastery` and `.claude/skills/codebase-to-mastery`. Use `--global` for the documented personal directories, `--dry-run` to preview paths, or `--directory /path/to/skills` for another client. Existing skill folders are preserved; move them aside before reinstalling. The installer places the Skill; your agent uses it to produce learning materials.
 
-The `.tgz` is hosted in GitHub Releases. It has **not** been published to npmjs.com or the GitHub Packages registry, so the supported direct command uses the full download URL. You can also download it and run `npx --yes /absolute/path/codebase-to-mastery-1.1.0.tgz --agent codex claude-code`.
+The `.tgz` is hosted in GitHub Releases. It has **not** been published to npmjs.com or the GitHub Packages registry, so the supported direct command uses the full download URL. You can also download it and run `npx --yes --package=/absolute/path/codebase-to-mastery-1.1.0.tgz codebase-to-mastery --agent codex claude-code`.
 
 ### One command for Codex and Claude Code
 

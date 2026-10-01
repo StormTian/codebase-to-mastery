@@ -59,13 +59,14 @@
 [v1.1.0 Release](https://github.com/StormTian/codebase-to-mastery/releases/tag/v1.1.0) 提供标准 `npm pack` 生成的 `.tgz`，内置零依赖安装入口：
 
 ```bash
-npx --yes https://github.com/StormTian/codebase-to-mastery/releases/download/v1.1.0/codebase-to-mastery-1.1.0.tgz \
-  --agent codex claude-code
+npx --yes \
+  --package=https://github.com/StormTian/codebase-to-mastery/releases/download/v1.1.0/codebase-to-mastery-1.1.0.tgz \
+  codebase-to-mastery --agent codex claude-code
 ```
 
 需要 Node.js 18+。默认安装到当前项目的 `.agents/skills/codebase-to-mastery` 和 `.claude/skills/codebase-to-mastery`；加 `--global` 安装到个人目录，`--dry-run` 查看目标，其他客户端使用 `--directory /path/to/skills`。已有 Skill 文件夹不会被覆盖，重装前需先自行移走旧目录。安装入口负责放置 Skill，学习资料仍由 Agent 使用 Skill 生成。
 
-这个 npm `.tgz` 托管在 **GitHub Releases**，尚未发布到 npmjs.com 或 GitHub Packages registry，所以直接安装使用完整下载地址。也可先下载，再执行 `npx --yes /absolute/path/codebase-to-mastery-1.1.0.tgz --agent codex claude-code`。
+这个 npm `.tgz` 托管在 **GitHub Releases**，尚未发布到 npmjs.com 或 GitHub Packages registry，所以直接安装使用完整下载地址。也可先下载，再执行 `npx --yes --package=/absolute/path/codebase-to-mastery-1.1.0.tgz codebase-to-mastery --agent codex claude-code`。
 
 ### 使用通用 Skills CLI
 
