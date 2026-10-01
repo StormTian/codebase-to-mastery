@@ -22,12 +22,20 @@
     applyMotion();
   });
 
+  let activeModuleId;
   const setActiveModule = (id) => {
+    if (activeModuleId === id) return;
+    activeModuleId = id;
     dots.forEach((dot) => {
       const active = dot.dataset.target === id;
       dot.classList.toggle('is-active', active);
       if (active) dot.setAttribute('aria-current', 'step');
       else dot.removeAttribute('aria-current');
+      const nav = dot.parentElement;
+      if (active && nav.scrollWidth > nav.clientWidth) {
+        nav.scrollTo({ left: dot.offsetLeft - nav.offsetLeft - (nav.clientWidth - dot.offsetWidth) / 2,
+          behavior: reduceMotion ? 'auto' : 'smooth' });
+      }
     });
   };
 

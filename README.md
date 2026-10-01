@@ -25,6 +25,8 @@ Large repositories begin with a read-through path and an explicit candidate subs
 
 Source excerpts are checked against exact file paths and line ranges, including the final HTML. Incremental updates report affected modules, concepts, prerequisites and lab contracts. Historical learner responses survive source changes and are flagged for review.
 
+The offline UI uses a dark chapter directory, cool teal accents, compact learning-stage cards and paired source/explanation panes. On narrow screens the directory becomes a horizontal chapter strip. The screenshot above is captured from the current original demo.
+
 **A usable course, a passing reference implementation and learner mastery are separate outcomes.** Mastery records require actual answers, rubric assessments and, for implementation exercises, a current passing learner run.
 
 ## Install

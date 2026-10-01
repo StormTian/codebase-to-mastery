@@ -47,5 +47,6 @@ The README installation conventions were checked on 2026-10-01 against [OpenAI](
 | Skills CLI 1.7.0 installation from the local folder | Codex and Claude Code discovery files and full resource copies verified in a fresh temporary project |
 | Helpers from both installed copies | Demo build, exact source validation, starter contract and reference core/budget controls passed |
 | Incomplete starter core/budget | Both clients reported `EXPECTED_INCOMPLETE` as required |
+| Revised offline UI at 1280×720 and 390×844 | Six-stage path, chapter navigation, J/K, quiz feedback, reduced motion, flow/chat, collapsed answers, persisted recall and unassessed JSON export checked in a browser |
 
 These checks exercised installation and Python helpers. They did not evaluate an end-to-end teaching session in Claude Code or every compatible client. The [Checks workflow](https://github.com/StormTian/codebase-to-mastery/actions/workflows/checks.yml) repeats the behavioral tests and demo controls on Python 3.10 and 3.12; its run status is the current evidence for those versions.

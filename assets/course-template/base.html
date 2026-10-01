@@ -11,30 +11,37 @@
 <body style="--accent: {{ACCENT}}">
   <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
   <aside class="course-rail" aria-label="Course navigation">
-    <a class="course-mark" href="#course-start" aria-label="Back to course start">C<span>→</span>C</a>
-    <nav class="module-nav" aria-label="Modules">{{NAV}}</nav>
-    <p class="key-hint"><kbd>J</kbd><kbd>K</kbd> to move</p>
+    <a class="course-mark" href="#course-start" aria-label="Codebase to Mastery">
+      <span class="brand-emblem" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="brand-name">Codebase<span>to Mastery</span></span>
+    </a>
+    <a class="overview-link" href="#course-start">{{OVERVIEW_LABEL}} <span aria-hidden="true">↗</span></a>
+    <p class="nav-label">{{NAV_LABEL}}</p>
+    <nav class="module-nav" aria-label="{{NAV_LABEL}}">{{NAV}}</nav>
+    <div class="rail-source"><span class="rail-source-label">{{SOURCE_LABEL}}</span><strong>{{SOURCE_NAME}}</strong></div>
+    <p class="key-hint"><kbd>J</kbd><kbd>K</kbd><span>{{KEY_HINT}}</span></p>
   </aside>
 
   <header class="course-cover" id="course-start">
-    <p class="cover-kicker">Source-grounded code learning</p>
+    <div class="cover-topline"><p class="cover-kicker">{{KICKER}}</p><span class="format-tag">{{FORMAT_LABEL}}</span></div>
     <h1>{{TITLE}}</h1>
     <p class="cover-subtitle">{{SUBTITLE}}</p>
     <dl class="course-meta">
-      <div><dt>Source</dt><dd>{{SOURCE_NAME}}</dd></div>
-      <div><dt>Revision</dt><dd>{{REVISION}}</dd></div>
-      <div><dt>Modules</dt><dd>{{MODULE_COUNT}}</dd></div>
+      <div><dt>{{SOURCE_LABEL}}</dt><dd>{{SOURCE_NAME}}</dd></div>
+      <div><dt>{{REVISION_LABEL}}</dt><dd>{{REVISION}}</dd></div>
+      <div><dt>{{MODULES_LABEL}}</dt><dd>{{MODULE_COUNT}}</dd></div>
     </dl>
-    <a class="start-link" href="{{START_TARGET}}">{{START_LABEL}} <span aria-hidden="true">↓</span></a>
-    <button type="button" class="motion-toggle" id="motion-toggle" aria-pressed="false">{{MOTION_LABEL}}</button>
+    <div class="cover-actions"><a class="start-link" href="{{START_TARGET}}">{{START_LABEL}} <span aria-hidden="true">→</span></a>
+    <button type="button" class="motion-toggle" id="motion-toggle" aria-pressed="false">{{MOTION_LABEL}}</button></div>
+    <div class="cover-route" aria-hidden="true"><span>READ</span><b>→</b><span>TRACE</span><b>→</b><span>BUILD</span><b>→</b><span>VERIFY</span></div>
   </header>
 
   {{LEARNING_PANEL}}
   <main id="course">{{MODULES}}</main>
 
   <footer class="course-footer">
-    <p>Built from inspected source. Code excerpts name their original file and line range.</p>
-    <a href="#course-start">Back to top ↑</a>
+    <p>{{FOOTER_TEXT}}</p>
+    <a href="#course-start">{{BACK_LABEL}} ↑</a>
   </footer>
   <script>{{JS}}</script>
 </body>

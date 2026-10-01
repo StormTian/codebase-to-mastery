@@ -288,10 +288,11 @@ def learning_panel(config: dict, kit: dict) -> str:
     zh = str(config.get('lang', '')).startswith('zh')
     title = '由浅入深的学习路径' if zh else 'A path from recognition to transfer'
     cards = []
-    for stage in kit.get('stages', []):
+    for index, stage in enumerate(kit.get('stages', []), 1):
         labels = {m['id']: m['title'] for m in config['modules']}
         links = ' '.join(f'<a href="#{esc(mid)}">{("进入课程" if zh else "Open lesson") if len(stage.get("modules", [])) == 1 else esc(labels.get(mid, mid))}</a>' for mid in stage.get('modules', []))
-        cards.append(f'<article class="learning-stage"><h3>{esc(stage["title"])}</h3><p>{esc(stage["outcome"])}</p><p class="gate">{esc(stage["gate"])}</p>{links}</article>')
+        stage_title = re.sub(r'^\d+\s*[·.:、-]\s*', '', str(stage['title']))
+        cards.append(f'<article class="learning-stage"><div class="stage-topline"><span class="stage-number">{index:02d}</span><span class="stage-kind">{esc(stage["id"])}</span></div><h3>{esc(stage_title)}</h3><p class="stage-outcome">{esc(stage["outcome"])}</p><div class="gate"><span>{"先想一想" if zh else "Think first"}</span><p>{esc(stage["gate"])}</p></div><div class="stage-links">{links}<span aria-hidden="true">→</span></div></article>')
     concepts = []
     for c in kit.get('concepts', []):
         anchors = ''.join(f'<p class="path-chip">{esc(a["path"])}:{esc(a["lines"])}</p><p>{esc(a["claim"])}</p><pre><code>{esc(a["text"])}</code></pre>' for a in c.get('anchors', []))
@@ -303,7 +304,7 @@ def learning_panel(config: dict, kit: dict) -> str:
             questions.append(f'<div class="recall" data-recall-id="{esc(key)}"><label for="recall-{esc(key)}">{esc(q["prompt"])}</label><textarea id="recall-{esc(key)}" rows="3" placeholder="{"先写下你的预测" if zh else "Write your prediction first"}"></textarea><details class="recall-answer"><summary>{"查看提示、答案与评价标准" if zh else "Hints, answer and rubric"}</summary><ul>{hints}</ul><p>{esc(q["answer"])}</p><ul>{rubric}</ul></details></div>')
         concepts.append(f'<details class="concept-card" id="concept-{esc(c["id"])}"><summary>{esc(c["name"])}</summary><p>{esc(c["explanation"])}</p><p>{"前置概念" if zh else "Prerequisites"}: {esc(", ".join(c.get("requires", [])) or "—")}</p><a href="#{esc(c["module"])}">{esc(c["outcome"])}</a>{"".join(questions)}<details><summary>{"精确源码锚点" if zh else "Exact source anchors"}</summary>{anchors}</details></details>')
     exports = f'<details class="export-preview" hidden><summary>{"可复制的导出记录" if zh else "Copyable export"}</summary><label for="export-data">{"尚未评价的回忆记录（JSON）" if zh else "Unassessed recall records (JSON)"}</label><textarea id="export-data" readonly rows="6"></textarea><a class="export-download" download="code-learning-recall.json">{"下载 JSON" if zh else "Download JSON"}</a></details>'
-    return f'<section id="learning-path" class="learning-panel" data-kit-id="{esc(kit["kitId"])}"><p class="eyebrow">Code learning</p><h2>{title}</h2><p>{esc(kit["scope"])}</p><p>{esc(kit["rebuildScope"])}</p><div class="learning-stages">{"".join(cards)}</div><h3>{"概念地图与主动回忆" if zh else "Concept map and active recall"}</h3><p>{"回答保存在本机浏览器；阅读和自评不代表已掌握。" if zh else "Answers stay in this browser; reading and self-ratings do not establish mastery."}</p>{"".join(concepts)}<button type="button" class="export-learning-notes">{"导出回忆记录" if zh else "Export recall notes"}</button><p class="notes-feedback" aria-live="polite"></p>{exports}</section>'
+    return f'<section id="learning-path" class="learning-panel" data-kit-id="{esc(kit["kitId"])}"><div class="panel-heading"><p class="eyebrow">The mastery path</p><span class="stage-count">{len(cards)} {"个学习阶段" if zh else "learning stages"}</span></div><h2>{title}</h2><p class="panel-scope">{esc(kit["scope"])}</p><div class="learning-stages">{"".join(cards)}</div><details class="scope-note"><summary>{"实践范围与边界" if zh else "Practice scope and boundaries"}</summary><p>{esc(kit["rebuildScope"])}</p></details><div class="recall-heading"><p class="eyebrow">Recall &amp; connect</p><h3>{"概念地图与主动回忆" if zh else "Concept map and active recall"}</h3><p>{"回答保存在本机浏览器；阅读和自评不代表已掌握。" if zh else "Answers stay in this browser; reading and self-ratings do not establish mastery."}</p></div>{"".join(concepts)}<button type="button" class="export-learning-notes">{"导出回忆记录" if zh else "Export recall notes"}</button><p class="notes-feedback" aria-live="polite"></p>{exports}</section>'
 
 
 def concept_dependencies(c: dict, config: dict) -> list[str]:

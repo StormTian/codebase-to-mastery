@@ -12,7 +12,7 @@ import subprocess
 from pathlib import Path
 
 
-DEFAULT_ACCENT = "#D95D39"
+DEFAULT_ACCENT = "#147D92"
 
 
 def slugify(value: str) -> str:
@@ -74,7 +74,7 @@ def main(argv: list[str] | None = None) -> int:
     if not source_root.is_dir():
         raise SystemExit(f"Source root is not a directory: {source_root}")
     if not re.fullmatch(r"#[0-9a-fA-F]{6}", args.accent):
-        raise SystemExit("--accent must be a six-digit hex color such as #D95D39")
+        raise SystemExit("--accent must be a six-digit hex color such as #147D92")
     if len(args.modules) < 3 or len(args.modules) > 8:
         raise SystemExit("Choose between 3 and 8 focused modules")
 
