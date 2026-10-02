@@ -2,7 +2,7 @@
 
 **From reading real code to explaining, rebuilding and transferring its ideas.**
 
-[中文说明](README.zh-CN.md) · [Skill instructions](SKILL.md) · [Releases](https://github.com/StormTian/codebase-to-mastery/releases) · [Validation](docs/validation.md) · [MIT license](LICENSE)
+[中文说明](README.zh-CN.md) · [Latest npm package](https://raw.githubusercontent.com/StormTian/codebase-to-mastery/main/codebase-to-mastery.tgz) · [Skill instructions](SKILL.md) · [Latest release](https://github.com/StormTian/codebase-to-mastery/releases/latest) · [Validation](docs/validation.md) · [MIT license](LICENSE)
 
 A portable Agent Skill for **Codex, Claude Code and other clients that support `SKILL.md`**. It turns a repository into a source-grounded learning path, with an offline interactive course, purposeful reading, active recall and bounded implementation exercises.
 
@@ -56,19 +56,21 @@ The offline UI uses a dark chapter directory, cool teal accents, compact learnin
 
 ## Install
 
-### Direct npx installation from the GitHub npm package
+### Install the latest npm package
 
-The [v1.1.0 Release](https://github.com/StormTian/codebase-to-mastery/releases/tag/v1.1.0) includes a standard `npm pack` tarball with a zero-dependency installer:
+The latest standard npm package sits at the repository root as [`codebase-to-mastery.tgz`](https://raw.githubusercontent.com/StormTian/codebase-to-mastery/main/codebase-to-mastery.tgz), with a zero-dependency installer. This command always selects the current package:
 
 ```bash
-npx --yes \
-  --package=https://github.com/StormTian/codebase-to-mastery/releases/download/v1.1.0/codebase-to-mastery-1.1.0.tgz \
+npx --yes --allow-remote=all \
+  --package=https://raw.githubusercontent.com/StormTian/codebase-to-mastery/main/codebase-to-mastery.tgz \
   codebase-to-mastery --agent codex claude-code
 ```
 
+The per-command `--allow-remote=all` flag opts into this URL install. [npm 12 defaults to refusing remote tarballs](https://docs.npmjs.com/cli/v12/using-npm/config/#allow-remote); the flag does not change your global npm configuration.
+
 Requires Node.js 18+. It copies the complete Skill into the current project's `.agents/skills/codebase-to-mastery` and `.claude/skills/codebase-to-mastery`. Use `--global` for the documented personal directories, `--dry-run` to preview paths, or `--directory /path/to/skills` for another client. Existing skill folders are preserved; move them aside before reinstalling. The installer places the Skill; your agent uses it to produce learning materials.
 
-The `.tgz` is hosted in GitHub Releases. It has **not** been published to npmjs.com or the GitHub Packages registry, so the supported direct command uses the full download URL. You can also download it and run `npx --yes --package=/absolute/path/codebase-to-mastery-1.1.0.tgz codebase-to-mastery --agent codex claude-code`.
+The `.tgz` is hosted on GitHub, with versioned copies retained in Releases. It has **not** been published to npmjs.com or the GitHub Packages registry, so the supported direct command uses the full download URL. You can also download it and run `npx --yes --package=/absolute/path/codebase-to-mastery.tgz codebase-to-mastery --agent codex claude-code`.
 
 ### One command for Codex and Claude Code
 
@@ -81,16 +83,9 @@ npx skills add StormTian/codebase-to-mastery \
 
 The [open-source Skills CLI](https://github.com/vercel-labs/skills) also supports other clients. Add `--global` for a personal installation, or select a different `--agent`. Node.js powers the `npx` installation methods; the skill's learning helpers use Python's standard library.
 
-### Install a fixed release or download an archive
+### Download the latest archive
 
-For the stable `v1.1.0` version:
-
-```bash
-npx skills add https://github.com/StormTian/codebase-to-mastery/tree/v1.1.0 \
-  --skill codebase-to-mastery --agent codex claude-code
-```
-
-The [v1.1.0 Release](https://github.com/StormTian/codebase-to-mastery/releases/tag/v1.1.0) includes ZIP, tar.gz, the npm `.tgz`, a source/file manifest and `SHA256SUMS`. ZIP/tar.gz extract to a complete `codebase-to-mastery/` folder you can place in your client's skill directory. See [release notes](docs/releases/v1.1.0.md) for checksum verification and [reproducing a release](docs/releasing.md) for packaging instructions. The original [v1.0.0](https://github.com/StormTian/codebase-to-mastery/releases/tag/v1.0.0) remains available.
+The [latest Release](https://github.com/StormTian/codebase-to-mastery/releases/latest) includes ZIP, tar.gz, the npm `.tgz`, a source/file manifest and `SHA256SUMS`. ZIP/tar.gz extract to a complete `codebase-to-mastery/` folder you can place in your client's skill directory. Checksum instructions accompany each release; see [reproducing a release](docs/releasing.md) for packaging instructions. Historical versions remain in [Releases](https://github.com/StormTian/codebase-to-mastery/releases).
 
 ### Manual installation
 

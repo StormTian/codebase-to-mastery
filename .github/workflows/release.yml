@@ -30,7 +30,9 @@ jobs:
       - name: Package the exact validated tag
         env:
           RELEASE_TAG: ${{ github.ref_name }}
-        run: python scripts/package_release.py --tag "$RELEASE_TAG" --npm --output dist
+        run: |
+          python scripts/package_release.py --tag "$RELEASE_TAG" --npm --output dist
+          cmp codebase-to-mastery.tgz "dist/codebase-to-mastery-${RELEASE_TAG#v}.tgz"
       - name: Verify and exercise the packaged Skill
         run: |
           cd dist

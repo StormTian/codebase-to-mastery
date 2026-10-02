@@ -1,6 +1,6 @@
 {
   "name": "codebase-to-mastery",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Install a portable, source-grounded code learning Skill for Codex, Claude Code and other Agent Skills clients.",
   "license": "MIT",
   "type": "module",

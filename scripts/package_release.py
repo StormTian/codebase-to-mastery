@@ -44,7 +44,7 @@ def package(repo: Path, ref: str, output: Path, tag: str | None = None, build_np
     with tarfile.open(fileobj=io.BytesIO(git(repo, "archive", "--format=tar", commit))) as archive:
         for member in archive:
             path = PurePosixPath(member.name)
-            if path.parts[0] == ".github" or member.name == ".gitignore":
+            if path.parts[0] == ".github" or member.name in {".gitignore", f"{SKILL_NAME}.tgz"}:
                 continue
             if path.is_absolute() or ".." in path.parts:
                 raise ValueError(f"Unsafe archive path: {member.name}")
@@ -137,7 +137,7 @@ def package(repo: Path, ref: str, output: Path, tag: str | None = None, build_np
     manifest = {
         "schemaVersion": 1, "skill": SKILL_NAME, "version": version, "tag": f"v{version}",
         "commit": commit, "rootDirectory": SKILL_NAME, "fileCount": len(files),
-        "excluded": [".github/", ".gitignore"],
+        "excluded": [".github/", ".gitignore", f"{SKILL_NAME}.tgz"],
         "files": [{"path": name, "sha256": digest(data), "size": len(data), "mode": oct(mode)}
                   for name, (data, mode) in sorted(files.items())],
         "artifacts": [{"name": name, "sha256": digest(data), "size": len(data)}

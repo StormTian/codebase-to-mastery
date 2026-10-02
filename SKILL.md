@@ -3,7 +3,7 @@ name: codebase-to-mastery
 description: Build source-grounded code learning paths from a repository, from accessible architecture lessons to guided reading, active recall, subsystem rebuilding and extension exercises. Also tutor from real code, teach recent changes, track evidenced learning progress, and refresh existing learning kits. Use for learning or teaching codebases, not ordinary implementation or code review.
 license: MIT
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
   compatibility: Requires Python 3.10+, Git, file access and command execution. Network access is needed only to fetch remote sources. Works with Codex, Claude Code and other Agent Skills clients.
 ---
 

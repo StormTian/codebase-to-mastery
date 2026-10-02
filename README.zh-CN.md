@@ -2,7 +2,7 @@
 
 **从读懂真实源码，走向能够解释、重建、验证并迁移其中的机制。**
 
-[English](README.md) · [Skill 入口](SKILL.md) · [版本发布](https://github.com/StormTian/codebase-to-mastery/releases) · [验证范围](docs/validation.md) · [MIT 许可证](LICENSE)
+[English](README.md) · [最新 npm 包](https://raw.githubusercontent.com/StormTian/codebase-to-mastery/main/codebase-to-mastery.tgz) · [Skill 入口](SKILL.md) · [最新发布](https://github.com/StormTian/codebase-to-mastery/releases/latest) · [验证范围](docs/validation.md) · [MIT 许可证](LICENSE)
 
 这是一个支持 **Codex、Claude Code 和通用 Agent Skills 客户端**的 Skill。输入本地代码库或 GitHub 项目，输出源码可追溯的学习包、离线交互课程和有边界的实践练习。
 
@@ -54,19 +54,21 @@
 
 ## 安装
 
-### 直接使用 GitHub 上的 npm 安装包
+### 直接安装最新 npm 包
 
-[v1.1.0 Release](https://github.com/StormTian/codebase-to-mastery/releases/tag/v1.1.0) 提供标准 `npm pack` 生成的 `.tgz`，内置零依赖安装入口：
+最新的标准 npm 包放在仓库根目录，固定命名为 [`codebase-to-mastery.tgz`](https://raw.githubusercontent.com/StormTian/codebase-to-mastery/main/codebase-to-mastery.tgz)，内置零依赖安装入口。下面的命令始终安装当前最新版，无需选择版本：
 
 ```bash
-npx --yes \
-  --package=https://github.com/StormTian/codebase-to-mastery/releases/download/v1.1.0/codebase-to-mastery-1.1.0.tgz \
+npx --yes --allow-remote=all \
+  --package=https://raw.githubusercontent.com/StormTian/codebase-to-mastery/main/codebase-to-mastery.tgz \
   codebase-to-mastery --agent codex claude-code
 ```
 
+`--allow-remote=all` 只为这次命令允许从 URL 安装。[npm 12 默认拒绝远程 tarball](https://docs.npmjs.com/cli/v12/using-npm/config/#allow-remote)；这个参数不会修改全局 npm 配置。
+
 需要 Node.js 18+。默认安装到当前项目的 `.agents/skills/codebase-to-mastery` 和 `.claude/skills/codebase-to-mastery`；加 `--global` 安装到个人目录，`--dry-run` 查看目标，其他客户端使用 `--directory /path/to/skills`。已有 Skill 文件夹不会被覆盖，重装前需先自行移走旧目录。安装入口负责放置 Skill，学习资料仍由 Agent 使用 Skill 生成。
 
-这个 npm `.tgz` 托管在 **GitHub Releases**，尚未发布到 npmjs.com 或 GitHub Packages registry，所以直接安装使用完整下载地址。也可先下载，再执行 `npx --yes --package=/absolute/path/codebase-to-mastery-1.1.0.tgz codebase-to-mastery --agent codex claude-code`。
+这个 npm `.tgz` 托管在 **GitHub**，历史版本保留在 Releases；尚未发布到 npmjs.com 或 GitHub Packages registry，所以直接安装使用完整下载地址。也可先下载，再执行 `npx --yes --package=/absolute/path/codebase-to-mastery.tgz codebase-to-mastery --agent codex claude-code`。
 
 ### 使用通用 Skills CLI
 
@@ -79,14 +81,7 @@ npx skills add StormTian/codebase-to-mastery \
 
 这是 [Skills CLI](https://github.com/vercel-labs/skills) 的安装方式。个人全局安装可加 `--global`，其他客户端使用对应 `--agent`。Node.js 用于两种 `npx` 安装方式；Skill 的学习脚本使用 Python 标准库。
 
-安装固定的 `v1.1.0` 版本：
-
-```bash
-npx skills add https://github.com/StormTian/codebase-to-mastery/tree/v1.1.0 \
-  --skill codebase-to-mastery --agent codex claude-code
-```
-
-[v1.1.0 Release](https://github.com/StormTian/codebase-to-mastery/releases/tag/v1.1.0) 提供 ZIP、tar.gz、npm `.tgz`、源码/文件清单和 `SHA256SUMS`。ZIP/tar.gz 解压后可把完整的 `codebase-to-mastery/` 放到下方客户端目录。校验方法见 [发布说明](docs/releases/v1.1.0.md)，构建方式见 [打包与发布](docs/releasing.md)。旧版 [v1.0.0](https://github.com/StormTian/codebase-to-mastery/releases/tag/v1.0.0) 继续保留。
+[最新 Release](https://github.com/StormTian/codebase-to-mastery/releases/latest) 提供 ZIP、tar.gz、npm `.tgz`、源码/文件清单和 `SHA256SUMS`。ZIP/tar.gz 解压后可把完整的 `codebase-to-mastery/` 放到下方客户端目录。校验方法随发布说明提供，构建方式见 [打包与发布](docs/releasing.md)。历史版本保留在 [Releases](https://github.com/StormTian/codebase-to-mastery/releases)。
 
 手工安装到 Codex 当前官方文档中的个人目录：
 

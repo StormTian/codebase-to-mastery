@@ -101,6 +101,19 @@ class ReleaseTest(unittest.TestCase):
             release.package(self.repo, "HEAD", output)
         self.assertEqual(asset.read_text(), "preserve")
 
+    def test_root_download_is_excluded_from_skill_archives(self) -> None:
+        (self.repo / "codebase-to-mastery.tgz").write_bytes(b"previous distribution artifact")
+        self.run_git("add", "codebase-to-mastery.tgz")
+        self.run_git("commit", "-qm", "Root download fixture")
+        output = self.root / "no-recursion"
+        manifest = release.package(self.repo, "HEAD", output)
+        self.assertEqual(manifest["fileCount"], len(self.source))
+        self.assertIn("codebase-to-mastery.tgz", manifest["excluded"])
+        with zipfile.ZipFile(output / "codebase-to-mastery-v1.0.0.zip") as archive:
+            self.assertNotIn("codebase-to-mastery/codebase-to-mastery.tgz", archive.namelist())
+        with tarfile.open(output / "codebase-to-mastery-v1.0.0.tar.gz") as archive:
+            self.assertNotIn("codebase-to-mastery/codebase-to-mastery.tgz", archive.getnames())
+
     def test_npm_metadata_version_mismatch_is_rejected(self) -> None:
         (self.repo / "package.json").write_text(json.dumps({"name": "codebase-to-mastery", "version": "9.0.0"}), encoding="utf-8")
         self.run_git("add", "package.json")
@@ -120,7 +133,8 @@ class ReleaseTest(unittest.TestCase):
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(self.source[name], encoding="utf-8")
         (self.repo / "bin/fixture.mjs").chmod(0o755)
-        self.run_git("add", "package.json", "bin/fixture.mjs")
+        (self.repo / "codebase-to-mastery.tgz").write_bytes(b"previous npm archive")
+        self.run_git("add", "package.json", "bin/fixture.mjs", "codebase-to-mastery.tgz")
         self.run_git("commit", "-qm", "npm fixture")
         (self.repo / "README.md").write_text("uncommitted local change", encoding="utf-8")
         output = self.root / "npm"

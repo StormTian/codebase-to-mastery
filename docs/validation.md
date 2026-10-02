@@ -62,3 +62,9 @@ The [Release workflow](../.github/workflows/release.yml) runs the Python 3.10/3.
 The local suite passes 32 Python tests and six Node installer tests. New checks exercise actual offline `npm pack` output, committed-payload equality, version alignment, multi-client resource installation, custom targets, existing-folder preservation, dangling-symlink refusal and read-only preview/help/version behavior.
 
 Run the Node tests with `npm test` or `node --test tests/npm/*.test.mjs`. The optional npm packaging test in the Python suite requires npm; without it the test reports a skip rather than claiming a pass. Full release CI includes both runtimes, builds the `.tgz` from a committed staging tree and executes `npm exec` against that actual file before publishing. This proves installation and fixture behavior, not learner mastery.
+
+## Remote npm installation · 2026-10-02
+
+On Node 22.23.0 / npm 12.0.2, direct installation from the public v1.1.0 GitHub tarball succeeded in a fresh project with an empty cache when using `npx --yes --allow-remote=all --package=URL codebase-to-mastery --agent codex claude-code`. All 45 installed resources per client matched the public manifest; both installed copies built the demo and passed all five positive/incomplete controls. The first attempt without the opt-in failed with `EALLOWREMOTE`, consistent with [npm 12's remote-source default](https://docs.npmjs.com/cli/v12/using-npm/config/#allow-remote). v1.1.1 updates the packaged instructions; the installer and teaching behavior are unchanged.
+
+The v1.1.1 local suite passes 33 Python tests and six Node tests. The added check excludes the root distribution archive from Skill ZIP/tar files; the actual npm packaging test also includes a tracked root archive and verifies that it is excluded from the complete npm payload. Release CI compares the committed root download with the freshly built npm tarball before publishing, so a stale root package blocks the release.
